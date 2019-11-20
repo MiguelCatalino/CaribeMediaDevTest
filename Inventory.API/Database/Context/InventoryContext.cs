@@ -14,5 +14,12 @@ namespace Inventory.API.Database.Context
             : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.CategoryItems)
+                .WithOne(e => e.ItemCategory);
+            modelBuilder.Entity<Item>().HasOne(c => c.ItemCategory);
+        }
     }
 }

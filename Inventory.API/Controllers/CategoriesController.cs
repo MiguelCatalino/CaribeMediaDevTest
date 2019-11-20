@@ -27,6 +27,11 @@ namespace Inventory.API.Controllers
         {
             return await _context.Categories.ToListAsync();
         }
+        [HttpGet("filter/{name}")]
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategories(string name)
+        {
+            return await _context.Categories.Where(c => c.CategoryName.Contains(name)).ToListAsync();
+        }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]

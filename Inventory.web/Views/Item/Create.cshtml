@@ -32,6 +32,11 @@
                 <input asp-for="ItemPrice" class="form-control" />
                 <span asp-validation-for="ItemPrice" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="ItemCategory" class="control-label"></label>
+                <select asp-for="CategoryID" asp-items="Model.Categories" class="form-control"></select>
+                <span asp-validation-for="CategoryID" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)

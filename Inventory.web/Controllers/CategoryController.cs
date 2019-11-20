@@ -25,6 +25,12 @@ namespace Inventory.web.Controllers
             var categories = await ApiHelper.GetListAsync<CategoryViewModel>(_apiURL, "Categories");
             return View(categories);
         }
+        [HttpPost]
+        public async Task<IActionResult> IndexAsync(string categoryName)
+        {
+            var items = await ApiHelper.GetListAsync<CategoryViewModel>(_apiURL, "Categories/filter", categoryName);
+            return View(items);
+        }
         public IActionResult Create()
         {
             return View();

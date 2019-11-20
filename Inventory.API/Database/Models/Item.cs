@@ -15,7 +15,9 @@ namespace Inventory.API.Database.Models
         public string ItemDescription { get; set; }
         public decimal ItemQuantity { get; set; }
         public decimal ItemPrice { get; set; }
+        [ForeignKey("CategoryID")]
         public Category ItemCategory { get; set; }
+        public int CategoryID { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }

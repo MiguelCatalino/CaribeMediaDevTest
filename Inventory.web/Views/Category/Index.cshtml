@@ -10,6 +10,18 @@
 <p>
     <a asp-action="Create">New</a>
 </p>
+<div>
+    <form asp-action="Index">
+
+        <div class="form-group">
+            <label class="control-label">Search by name</label>
+            <input type="text" name="categoryName" class="form-control">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -23,7 +35,7 @@
                 Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsActive)
+                IsActive
             </th>
             <th>
                 Created Date

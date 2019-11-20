@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -20,11 +21,13 @@ namespace Inventory.web.Models
         public decimal ItemPrice { get; set; }
         [DisplayName("Category")]
         public CategoryViewModel ItemCategory { get; set; }
+        public int CategoryID { get; set; }
         [DisplayName("Is Active")]
         public bool IsActive { get; set; }
         [DisplayName("Created Date")]
         public DateTime CreatedDate { get; set; }
         [DisplayName("Modified Date")]
         public DateTime ModifiedDate { get; set; }
+        public List<SelectListItem> Categories { get; set; }
     }
 }

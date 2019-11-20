@@ -36,7 +36,24 @@ namespace Inventory.web.Helpers
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var Res = await client.GetAsync(action);
+                var Res = await client.GetAsync($"{action}");
+                if (Res.IsSuccessStatusCode)
+                {
+                    var response = Res.Content.ReadAsStringAsync().Result;
+                    resultList = JsonConvert.DeserializeObject<List<T>>(response);
+                }
+            }
+            return resultList;
+        }
+        public static async Task<List<T>> GetListAsync<T>(string baseUrl, string action, string filter)
+        {
+            var resultList = new List<T>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var Res = await client.GetAsync($"{action}/{filter}");
                 if (Res.IsSuccessStatusCode)
                 {
                     var response = Res.Content.ReadAsStringAsync().Result;

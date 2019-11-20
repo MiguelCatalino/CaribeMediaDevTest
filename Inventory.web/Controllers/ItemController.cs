@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Inventory.web.Helpers;
 using Inventory.web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 
 namespace Inventory.web.Controllers
@@ -21,9 +22,22 @@ namespace Inventory.web.Controllers
             var items = await ApiHelper.GetListAsync<ItemViewModel>(_apiURL, "Items");
             return View(items);
         }
-        public IActionResult Create()
+        [HttpPost]
+        public async Task<IActionResult> IndexAsync(string itemName)
         {
-            return View();
+            var items = await ApiHelper.GetListAsync<ItemViewModel>(_apiURL, "Items/filter", itemName);
+            return View(items);
+        }
+        public async Task<IActionResult> CreateAsync()
+        {
+            var model = new ItemViewModel();
+            model.ItemCategory = new CategoryViewModel();
+            var categories = await ApiHelper.GetListAsync<CategoryViewModel>(_apiURL, "Categories");
+            if (categories != null)
+            {
+                model.Categories = categories.Select(x => new SelectListItem { Value = x.CategoryID.ToString(), Text = x.CategoryName }).ToList();
+            }
+            return View(model);
         }
         [HttpPost]
         public async Task<ActionResult> CreateAsync(ItemViewModel item)
@@ -43,6 +57,10 @@ namespace Inventory.web.Controllers
                 return BadRequest("Items needed");
             }
             var result = await ApiHelper.GetAsync<ItemViewModel>(_apiURL, "items", id);
+            if (result != null && result.CategoryID > 0)
+            {
+                result.ItemCategory = await ApiHelper.GetAsync<CategoryViewModel>(_apiURL, "Categories", result.CategoryID);
+            }
             return View(result);
         }
         [HttpPost]
@@ -68,6 +86,15 @@ namespace Inventory.web.Controllers
                 return BadRequest("Item needed");
             }
             var result = await ApiHelper.GetAsync<ItemViewModel>(_apiURL, "Items", id);
+            var categories = await ApiHelper.GetListAsync<CategoryViewModel>(_apiURL, "Categories");
+            if (categories != null)
+            {
+                result.Categories = categories.Select(x => new SelectListItem { Value = x.CategoryID.ToString(), Text = x.CategoryName }).ToList();
+            }
+            if (result != null && result.CategoryID > 0)
+            {
+                result.ItemCategory = categories.SingleOrDefault(c => c.CategoryID == result.CategoryID);
+            }
             return View(result);
         }
         [HttpPost]
